@@ -1,0 +1,6 @@
+pcre2 (10.20-1) unstable; urgency=low
+
+  * Initial debian version (Closes: #805728)
+
+ -- Matthew Vernon <matthew@debian.org>  Sun, 22 Nov 2015 15:58:38 +0000
+
