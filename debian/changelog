@@ -1,3 +1,10 @@
+pcre2 (10.20-2) unstable; urgency=low
+
+  * remove unnecessary -L settings (Closes: #805941)
+  * Improve makefile syntax, and add JIT on arm64
+
+ -- Matthew Vernon <matthew@debian.org>  Tue, 24 Nov 2015 20:39:15 +0000
+
 pcre2 (10.20-1) unstable; urgency=low
 
   * Initial debian version (Closes: #805728)
