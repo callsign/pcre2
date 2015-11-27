@@ -1,3 +1,9 @@
+pcre2 (10.20-3) unstable; urgency=low
+
+  * Enable JIT on ppc64 & ppc64el (Closes: #806388)
+
+ -- Matthew Vernon <matthew@debian.org>  Fri, 27 Nov 2015 08:16:38 +0000
+
 pcre2 (10.20-2) unstable; urgency=low
 
   * remove unnecessary -L settings (Closes: #805941)
