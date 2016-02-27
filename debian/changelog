@@ -1,3 +1,11 @@
+pcre2 (10.21-1) unstable; urgency=low
+
+  * New upstream version
+  * Upstream patch to fix workspace overflow for (*ACCEPT) with deeply
+    nested parentheses (Closes: #815920)
+
+ -- Matthew Vernon <matthew@debian.org>  Sat, 27 Feb 2016 15:21:34 +0000
+
 pcre2 (10.20-3) unstable; urgency=low
 
   * Enable JIT on ppc64 & ppc64el (Closes: #806388)
