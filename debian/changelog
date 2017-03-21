@@ -1,3 +1,10 @@
+pcre2 (10.22-3) unstable; urgency=medium
+
+  * CVE-2017-7186: invalid Unicode property lookup may cause denial of
+    service (Closes: #858233)
+
+ -- Matthew Vernon <matthew@debian.org>  Tue, 21 Mar 2017 22:33:58 +0000
+
 pcre2 (10.22-2) unstable; urgency=low
 
   * re-upload with source :-(
