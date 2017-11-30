@@ -1,3 +1,9 @@
+pcre2 (10.22-4) unstable; urgency=low
+
+  * Add README.source explaining packaging workflow (Closes: #862425)
+
+ -- Matthew Vernon <matthew@debian.org>  Thu, 30 Nov 2017 14:17:39 +0000
+
 pcre2 (10.22-3) unstable; urgency=medium
 
   * CVE-2017-7186: invalid Unicode property lookup may cause denial of
