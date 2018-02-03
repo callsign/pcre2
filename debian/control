@@ -22,6 +22,14 @@ Description: New Perl Compatible Regular Expression Library- 8 bit runtime files
  .
  This package contains the 8 bit runtime library.
 
+Package: libpcre2-8-0-udeb
+Package-Type: udeb
+Section: debian-installer
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: New Perl Compatible Regular Expression Library- 8 bit runtime files (udeb)
+ This package contains the 8 bit runtime library, for the Debian Installer.
+
 Package: libpcre2-16-0
 Section: libs
 Architecture: any

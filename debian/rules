@@ -25,5 +25,8 @@ endif
 override_dh_auto_configure:
 	dh_auto_configure -- $(deb_maint_conf_args)
 
+override_dh_makeshlibs:
+	dh_makeshlibs -V --add-udeb=libpcre2-8-0-udeb
+
 override_dh_strip:
 	dh_strip --dbg-package=libpcre2-dbg
