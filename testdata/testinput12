@@ -343,7 +343,4 @@
 /./utf
     \x{110000}
 
-/\pP/ucp
-    \x{7fffffff}\=no_jit
-
 # End of testinput12

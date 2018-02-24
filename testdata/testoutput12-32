@@ -1361,8 +1361,4 @@ Subject length lower bound = 2
     \x{110000}
 Failed: error -28: UTF-32 error: code points greater than 0x10ffff are not defined at offset 0
 
-/\pP/ucp
-    \x{7fffffff}\=no_jit
-No match
-
 # End of testinput12
