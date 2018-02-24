@@ -4,8 +4,8 @@ Priority: optional
 Maintainer:  Matthew Vernon <matthew@debian.org>
 Standards-Version: 3.9.6
 Build-Depends: debhelper (>=9), dpkg-dev (>= 1.16.1~)
-Vcs-Git: https://git.dgit.debian.org/pcre2
-Vcs-Browser: https://browse.dgit.debian.org/pcre2.git/
+Vcs-Git: https://salsa.debian.org/debian/pcre2.git
+Vcs-Browser: https://salsa.debian.org/debian/pcre2
 
 Package: libpcre2-8-0
 Section: libs
