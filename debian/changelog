@@ -1,3 +1,12 @@
+pcre2 (10.31-2) unstable; urgency=low
+
+  * Point to salsa repo in vcs* fields
+  * priority extra -> optional
+  * Add homepage link in debian/control
+  * Update to newer standards-version
+
+ -- Matthew Vernon <matthew@debian.org>  Sat, 24 Feb 2018 14:57:26 +0000
+
 pcre2 (10.31-1) unstable; urgency=medium
 
   * New upstream version (Closes: #883224)
