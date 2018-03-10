@@ -1,3 +1,9 @@
+pcre2 (10.31-3) unstable; urgency=medium
+
+  * Disable JIT on mips* (apropos #892488)
+
+ -- Matthew Vernon <matthew@debian.org>  Sat, 10 Mar 2018 00:31:33 +0000
+
 pcre2 (10.31-2) unstable; urgency=low
 
   * Point to salsa repo in vcs* fields
