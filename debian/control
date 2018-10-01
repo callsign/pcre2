@@ -94,7 +94,6 @@ Description: New Perl Compatible Regular Expression Library - development files
 
 Package: libpcre2-dbg
 Section: debug
-Priority: optional
 Architecture: any
 Multi-Arch: same
 Depends: libpcre2-8-0 (= ${binary:Version}), libpcre2-16-0 (= ${binary:Version}), libpcre2-32-0 (= ${binary:Version}), libpcre2-posix0 (= ${binary:Version}), ${misc:Depends}

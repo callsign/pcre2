@@ -1,3 +1,9 @@
+pcre2 (10.31-4) UNRELEASED; urgency=medium
+
+  * d/control: Removing redundant Priority field in binary package
+
+ -- Ondřej Nový <onovy@debian.org>  Mon, 01 Oct 2018 10:19:57 +0200
+
 pcre2 (10.31-3) unstable; urgency=medium
 
   * Disable JIT on mips* (apropos #892488)
