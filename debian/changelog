@@ -1,3 +1,9 @@
+pcre2 (10.32-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Matthew Vernon <matthew@debian.org>  Fri, 26 Oct 2018 19:27:13 +0100
+
 pcre2 (10.31-3) unstable; urgency=medium
 
   * Disable JIT on mips* (apropos #892488)
