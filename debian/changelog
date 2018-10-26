@@ -1,3 +1,10 @@
+pcre2 (10.32-2) unstable; urgency=medium
+
+  * Take Ondřej Nový's patch to remove redundant Priority field in -dbg
+    package
+
+ -- Matthew Vernon <matthew@debian.org>  Fri, 26 Oct 2018 20:01:53 +0100
+
 pcre2 (10.32-1) unstable; urgency=medium
 
   * New upstream release
