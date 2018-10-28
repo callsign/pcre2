@@ -1,3 +1,9 @@
+pcre2 (10.32-3) unstable; urgency=medium
+
+  * Sacrifice an integer to dgit (previous upload didn't work)
+
+ -- Matthew Vernon <matthew@debian.org>  Sun, 28 Oct 2018 14:19:04 +0000
+
 pcre2 (10.32-2) unstable; urgency=medium
 
   * Take Ondřej Nový's patch to remove redundant Priority field in -dbg
