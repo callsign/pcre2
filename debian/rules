@@ -11,7 +11,7 @@ include /usr/share/dpkg/default.mk
 export DEB_CFLAGS_MAINT_APPEND = -Dregcomp=PCRE2regcomp -Dregexec=PCRE2regexec -Dregerror=PCRE2regerror -Dregfree=PCRE2regfree
 
 
-deb_maint_conf_args = --enable-pcre2-16 --enable-pcre2-32
+deb_maint_conf_args = --enable-pcre2-16 --enable-pcre2-32 --disable-pcre2grep-callout
 #enable JIT only on architectures that support it (see pcre2jit.3)
 ifneq ($(filter i386 amd64 armel armhf powerpc sparc arm64 ppc64 ppc64el, $(DEB_HOST_ARCH)),)
 deb_maint_conf_args +=--enable-jit
