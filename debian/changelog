@@ -1,3 +1,10 @@
+pcre2 (10.32-5) unstable; urgency=high
+
+  * Patch from Guillem Jover <guillem@debian.org> to only use SSE2
+    instructions on those i386 CPUs that support them (Closes: #925360)
+
+ -- Matthew Vernon <matthew@debian.org>  Mon, 25 Mar 2019 19:56:19 +0000
+
 pcre2 (10.32-4) unstable; urgency=medium
 
   * Take patch from Jeremy Bicha to build with
