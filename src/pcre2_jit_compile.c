@@ -5120,8 +5120,9 @@ for (i = 0; i < max; i++)
   }
 
 #if (defined SLJIT_CONFIG_X86 && SLJIT_CONFIG_X86) && !(defined SUPPORT_VALGRIND) && !(defined _WIN64)
-if (check_fast_forward_char_pair_sse2(common, chars, max))
-  return TRUE;
+if (sljit_has_cpu_feature(SLJIT_HAS_SSE2))
+  if (check_fast_forward_char_pair_sse2(common, chars, max))
+    return TRUE;
 #endif
 
 in_range = FALSE;
