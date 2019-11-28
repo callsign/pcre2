@@ -1,4 +1,4 @@
-.TH PCRE2GREP 1 "24 February 2018" "PCRE2 10.32"
+.TH PCRE2GREP 1 "15 June 2019" "PCRE2 10.34"
 .SH NAME
 pcre2grep - a grep with Perl-compatible regular expressions.
 .SH SYNOPSIS
@@ -596,19 +596,29 @@ otherwise empty line. This option is mutually exclusive with \fB--output\fP,
 .TP
 \fB-o\fP\fInumber\fP, \fB--only-matching\fP=\fInumber\fP
 Show only the part of the line that matched the capturing parentheses of the
-given number. Up to 32 capturing parentheses are supported, and -o0 is
-equivalent to \fB-o\fP without a number. Because these options can be given
-without an argument (see above), if an argument is present, it must be given in
-the same shell item, for example, -o3 or --only-matching=2. The comments given
-for the non-argument case above also apply to this option. If the specified
-capturing parentheses do not exist in the pattern, or were not set in the
-match, nothing is output unless the file name or line number are being output.
+given number. Up to 50 capturing parentheses are supported by default. This
+limit can be changed via the \fB--om-capture\fP option. A pattern may contain
+any number of capturing parentheses, but only those whose number is within the
+limit can be accessed by \fB-o\fP. An error occurs if the number specified by
+\fB-o\fP is greater than the limit.
+.sp
+-o0 is the same as \fB-o\fP without a number. Because these options can be
+given without an argument (see above), if an argument is present, it must be
+given in the same shell item, for example, -o3 or --only-matching=2. The
+comments given for the non-argument case above also apply to this option. If
+the specified capturing parentheses do not exist in the pattern, or were not
+set in the match, nothing is output unless the file name or line number are
+being output.
 .sp
 If this option is given multiple times, multiple substrings are output for each
 match, in the order the options are given, and all on one line. For example,
 -o3 -o1 -o3 causes the substrings matched by capturing parentheses 3 and 1 and
 then 3 again to be output. By default, there is no separator (but see the next
-option).
+but one option).
+.TP
+\fB--om-capture\fP=\fInumber\fP
+Set the number of capturing parentheses that can be accessed by \fB-o\fP. The
+default is 50.
 .TP
 \fB--om-separator\fP=\fItext\fP
 Specify a separating string for multiple occurrences of \fB-o\fP. The default
@@ -644,11 +654,21 @@ is listed. If file names are being output, the grand total is preceded by
 ignored when used with \fB-L\fP (list files without matches), because the grand
 total would always be zero.
 .TP
-\fB-u\fP, \fB--utf-8\fP
+\fB-u\fP, \fB--utf\fP
 Operate in UTF-8 mode. This option is available only if PCRE2 has been compiled
 with UTF-8 support. All patterns (including those for any \fB--exclude\fP and
 \fB--include\fP options) and all subject lines that are scanned must be valid
 strings of UTF-8 characters.
+.TP
+\fB-U\fP, \fB--utf-allow-invalid\fP
+As \fB--utf\fP, but in addition subject lines may contain invalid UTF-8 code
+unit sequences. These can never form part of any pattern match. This facility
+allows valid UTF-8 strings to be sought in executable or other binary files.
+For more details about matching in non-valid UTF-8 strings, see the
+.\" HREF
+\fBpcre2unicode\fP(3)
+.\"
+documentation.
 .TP
 \fB-V\fP, \fB--version\fP
 Write the version numbers of \fBpcre2grep\fP and the PCRE2 library to the
@@ -711,9 +731,9 @@ as in the GNU \fBgrep\fP program. Any long option of the form
 \fB--file-offsets\fP, \fB--heap-limit\fP, \fB--include-dir\fP,
 \fB--line-offsets\fP, \fB--locale\fP, \fB--match-limit\fP, \fB-M\fP,
 \fB--multiline\fP, \fB-N\fP, \fB--newline\fP, \fB--om-separator\fP,
-\fB--output\fP, \fB-u\fP, and \fB--utf-8\fP options are specific to
-\fBpcre2grep\fP, as is the use of the \fB--only-matching\fP option with a
-capturing parentheses number.
+\fB--output\fP, \fB-u\fP, \fB--utf\fP, \fB-U\fP, and \fB--utf-allow-invalid\fP
+options are specific to \fBpcre2grep\fP, as is the use of the
+\fB--only-matching\fP option with a capturing parentheses number.
 .P
 Although most of the common options work the same way, a few are different in
 \fBpcre2grep\fP. For example, the \fB--include\fP option's argument is a glob
@@ -759,10 +779,12 @@ character. Otherwise \fBpcre2grep\fP will assume that it has no data.
 .sp
 \fBpcre2grep\fP has, by default, support for calling external programs or
 scripts or echoing specific strings during matching by making use of PCRE2's
-callout facility. However, this support can be disabled when \fBpcre2grep\fP is
-built. You can find out whether your binary has support for callouts by running
-it with the \fB--help\fP option. If the support is not enabled, all callouts in
-patterns are ignored by \fBpcre2grep\fP.
+callout facility. However, this support can be completely or partially disabled
+when \fBpcre2grep\fP is built. You can find out whether your binary has support
+for callouts by running it with the \fB--help\fP option. If callout support is
+completely disabled, all callouts in patterns are ignored by \fBpcre2grep\fP.
+If the facility is partially disabled, calling external programs is not
+supported, and callouts that request it are ignored.
 .P
 A callout in a PCRE2 pattern is of the form (?C<arg>) where the argument is
 either a number or a quoted string (see the
@@ -776,6 +798,11 @@ only callouts with string arguments are useful.
 .SS "Calling external programs or scripts"
 .rs
 .sp
+This facility can be independently disabled when \fBpcre2grep\fP is built. It
+is supported for Windows, where a call to \fB_spawnvp()\fP is used, for VMS,
+where \fBlib$spawn()\fP is used, and for any other Unix-like environment where
+\fBfork()\fP and \fBexecv()\fP are available.
+.P
 If the callout string does not start with a pipe (vertical bar) character, it
 is parsed into a list of substrings separated by pipe characters. The first
 substring must be an executable name, with the following substrings specifying
@@ -803,7 +830,7 @@ a single dollar and $| is replaced by a pipe character. Here is an example:
     Arg1: [1] [234] [4] Arg2: |1| ()
     12345
 .sp
-The parameters for the \fBexecv()\fP system call that is used to run the
+The parameters for the system call that is used to run the
 program or script are zero-terminated strings. This means that binary zero
 characters in the callout argument will cause premature termination of their
 substrings, and therefore should not be present. Any syntax errors in the
@@ -816,14 +843,15 @@ matcher backtracks in the normal way.
 .SS "Echoing a specific string"
 .rs
 .sp
-If the callout string starts with a pipe (vertical bar) character, the rest of
-the string is written to the output, having been passed through the same escape
-processing as text from the --output option. This provides a simple echoing
-facility that avoids calling an external program or script. No terminator is
-added to the string, so if you want a newline, you must include it explicitly.
-Matching continues normally after the string is output. If you want to see only
-the callout output but not any output from an actual match, you should end the
-relevant pattern with (*FAIL).
+This facility is always available, provided that callouts were not completely
+disabled when \fBpcre2grep\fP was built. If the callout string starts with a
+pipe (vertical bar) character, the rest of the string is written to the output,
+having been passed through the same escape processing as text from the --output
+option. This provides a simple echoing facility that avoids calling an external
+program or script. No terminator is added to the string, so if you want a
+newline, you must include it explicitly. Matching continues normally after the
+string is output. If you want to see only the callout output but not any output
+from an actual match, you should end the relevant pattern with (*FAIL).
 .
 .
 .SH "MATCHING ERRORS"
@@ -876,6 +904,6 @@ Cambridge, England.
 .rs
 .sp
 .nf
-Last updated: 24 February 2018
-Copyright (c) 1997-2018 University of Cambridge.
+Last updated: 15 June 2019
+Copyright (c) 1997-2019 University of Cambridge.
 .fi

@@ -4,12 +4,12 @@
 # in some widths and not in others.
 
 /ab\Cde/utf,info
-Capturing subpattern count = 0
+Capture group count = 0
 Contains \C
 Options: utf
 First code unit = 'a'
 Last code unit = 'e'
-Subject length lower bound = 0
+Subject length lower bound = 2
     abXde
  0: abXde
 
