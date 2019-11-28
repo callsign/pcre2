@@ -1,3 +1,9 @@
+pcre2 (10.34-1) unstable; urgency=medium
+
+  * New upstream release
+
+ -- Matthew Vernon <matthew@debian.org>  Thu, 28 Nov 2019 16:28:31 +0000
+
 pcre2 (10.32-5) unstable; urgency=high
 
   * Patch from Guillem Jover <guillem@debian.org> to only use SSE2
