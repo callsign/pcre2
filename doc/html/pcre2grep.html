@@ -685,20 +685,32 @@ otherwise empty line. This option is mutually exclusive with <b>--output</b>,
 <P>
 <b>-o</b><i>number</i>, <b>--only-matching</b>=<i>number</i>
 Show only the part of the line that matched the capturing parentheses of the
-given number. Up to 32 capturing parentheses are supported, and -o0 is
-equivalent to <b>-o</b> without a number. Because these options can be given
-without an argument (see above), if an argument is present, it must be given in
-the same shell item, for example, -o3 or --only-matching=2. The comments given
-for the non-argument case above also apply to this option. If the specified
-capturing parentheses do not exist in the pattern, or were not set in the
-match, nothing is output unless the file name or line number are being output.
+given number. Up to 50 capturing parentheses are supported by default. This
+limit can be changed via the <b>--om-capture</b> option. A pattern may contain
+any number of capturing parentheses, but only those whose number is within the
+limit can be accessed by <b>-o</b>. An error occurs if the number specified by
+<b>-o</b> is greater than the limit.
+<br>
+<br>
+-o0 is the same as <b>-o</b> without a number. Because these options can be
+given without an argument (see above), if an argument is present, it must be
+given in the same shell item, for example, -o3 or --only-matching=2. The
+comments given for the non-argument case above also apply to this option. If
+the specified capturing parentheses do not exist in the pattern, or were not
+set in the match, nothing is output unless the file name or line number are
+being output.
 <br>
 <br>
 If this option is given multiple times, multiple substrings are output for each
 match, in the order the options are given, and all on one line. For example,
 -o3 -o1 -o3 causes the substrings matched by capturing parentheses 3 and 1 and
 then 3 again to be output. By default, there is no separator (but see the next
-option).
+but one option).
+</P>
+<P>
+<b>--om-capture</b>=<i>number</i>
+Set the number of capturing parentheses that can be accessed by <b>-o</b>. The
+default is 50.
 </P>
 <P>
 <b>--om-separator</b>=<i>text</i>
@@ -741,11 +753,20 @@ ignored when used with <b>-L</b> (list files without matches), because the grand
 total would always be zero.
 </P>
 <P>
-<b>-u</b>, <b>--utf-8</b>
+<b>-u</b>, <b>--utf</b>
 Operate in UTF-8 mode. This option is available only if PCRE2 has been compiled
 with UTF-8 support. All patterns (including those for any <b>--exclude</b> and
 <b>--include</b> options) and all subject lines that are scanned must be valid
 strings of UTF-8 characters.
+</P>
+<P>
+<b>-U</b>, <b>--utf-allow-invalid</b>
+As <b>--utf</b>, but in addition subject lines may contain invalid UTF-8 code
+unit sequences. These can never form part of any pattern match. This facility
+allows valid UTF-8 strings to be sought in executable or other binary files.
+For more details about matching in non-valid UTF-8 strings, see the
+<a href="pcre2unicode.html"><b>pcre2unicode</b>(3)</a>
+documentation.
 </P>
 <P>
 <b>-V</b>, <b>--version</b>
@@ -806,9 +827,9 @@ as in the GNU <b>grep</b> program. Any long option of the form
 <b>--file-offsets</b>, <b>--heap-limit</b>, <b>--include-dir</b>,
 <b>--line-offsets</b>, <b>--locale</b>, <b>--match-limit</b>, <b>-M</b>,
 <b>--multiline</b>, <b>-N</b>, <b>--newline</b>, <b>--om-separator</b>,
-<b>--output</b>, <b>-u</b>, and <b>--utf-8</b> options are specific to
-<b>pcre2grep</b>, as is the use of the <b>--only-matching</b> option with a
-capturing parentheses number.
+<b>--output</b>, <b>-u</b>, <b>--utf</b>, <b>-U</b>, and <b>--utf-allow-invalid</b>
+options are specific to <b>pcre2grep</b>, as is the use of the
+<b>--only-matching</b> option with a capturing parentheses number.
 </P>
 <P>
 Although most of the common options work the same way, a few are different in
@@ -853,10 +874,12 @@ character. Otherwise <b>pcre2grep</b> will assume that it has no data.
 <P>
 <b>pcre2grep</b> has, by default, support for calling external programs or
 scripts or echoing specific strings during matching by making use of PCRE2's
-callout facility. However, this support can be disabled when <b>pcre2grep</b> is
-built. You can find out whether your binary has support for callouts by running
-it with the <b>--help</b> option. If the support is not enabled, all callouts in
-patterns are ignored by <b>pcre2grep</b>.
+callout facility. However, this support can be completely or partially disabled
+when <b>pcre2grep</b> is built. You can find out whether your binary has support
+for callouts by running it with the <b>--help</b> option. If callout support is
+completely disabled, all callouts in patterns are ignored by <b>pcre2grep</b>.
+If the facility is partially disabled, calling external programs is not
+supported, and callouts that request it are ignored.
 </P>
 <P>
 A callout in a PCRE2 pattern is of the form (?C&#60;arg&#62;) where the argument is
@@ -868,6 +891,12 @@ only callouts with string arguments are useful.
 <br><b>
 Calling external programs or scripts
 </b><br>
+<P>
+This facility can be independently disabled when <b>pcre2grep</b> is built. It
+is supported for Windows, where a call to <b>_spawnvp()</b> is used, for VMS,
+where <b>lib$spawn()</b> is used, and for any other Unix-like environment where
+<b>fork()</b> and <b>execv()</b> are available.
+</P>
 <P>
 If the callout string does not start with a pipe (vertical bar) character, it
 is parsed into a list of substrings separated by pipe characters. The first
@@ -897,7 +926,7 @@ a single dollar and $| is replaced by a pipe character. Here is an example:
     Arg1: [1] [234] [4] Arg2: |1| ()
     12345
 </pre>
-The parameters for the <b>execv()</b> system call that is used to run the
+The parameters for the system call that is used to run the
 program or script are zero-terminated strings. This means that binary zero
 characters in the callout argument will cause premature termination of their
 substrings, and therefore should not be present. Any syntax errors in the
@@ -910,14 +939,15 @@ matcher backtracks in the normal way.
 Echoing a specific string
 </b><br>
 <P>
-If the callout string starts with a pipe (vertical bar) character, the rest of
-the string is written to the output, having been passed through the same escape
-processing as text from the --output option. This provides a simple echoing
-facility that avoids calling an external program or script. No terminator is
-added to the string, so if you want a newline, you must include it explicitly.
-Matching continues normally after the string is output. If you want to see only
-the callout output but not any output from an actual match, you should end the
-relevant pattern with (*FAIL).
+This facility is always available, provided that callouts were not completely
+disabled when <b>pcre2grep</b> was built. If the callout string starts with a
+pipe (vertical bar) character, the rest of the string is written to the output,
+having been passed through the same escape processing as text from the --output
+option. This provides a simple echoing facility that avoids calling an external
+program or script. No terminator is added to the string, so if you want a
+newline, you must include it explicitly. Matching continues normally after the
+string is output. If you want to see only the callout output but not any output
+from an actual match, you should end the relevant pattern with (*FAIL).
 </P>
 <br><a name="SEC12" href="#TOC1">MATCHING ERRORS</a><br>
 <P>
@@ -962,9 +992,9 @@ Cambridge, England.
 </P>
 <br><a name="SEC16" href="#TOC1">REVISION</a><br>
 <P>
-Last updated: 24 February 2018
+Last updated: 15 June 2019
 <br>
-Copyright &copy; 1997-2018 University of Cambridge.
+Copyright &copy; 1997-2019 University of Cambridge.
 <br>
 <p>
 Return to the <a href="index.html">PCRE2 index page</a>.

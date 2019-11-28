@@ -1,4 +1,4 @@
-.TH PCRE2JIT 3 "28 June 2018" "PCRE2 10.32"
+.TH PCRE2JIT 3 "23 May 2019" "PCRE2 10.34"
 .SH NAME
 PCRE2 - Perl-compatible regular expressions (revised API)
 .SH "PCRE2 JUST-IN-TIME COMPILER SUPPORT"
@@ -120,13 +120,42 @@ support is not available, or the pattern was not processed by
 pattern.
 .
 .
+.SH "MATCHING SUBJECTS CONTAINING INVALID UTF"
+.rs
+.sp
+When a pattern is compiled with the PCRE2_UTF option, subject strings are
+normally expected to be a valid sequence of UTF code units. By default, this is
+checked at the start of matching and an error is generated if invalid UTF is
+detected. The PCRE2_NO_UTF_CHECK option can be passed to \fBpcre2_match()\fP to
+skip the check (for improved performance) if you are sure that a subject string
+is valid. If this option is used with an invalid string, the result is
+undefined.
+.P
+However, a way of running matches on strings that may contain invalid UTF
+sequences is available. Calling \fBpcre2_compile()\fP with the
+PCRE2_MATCH_INVALID_UTF option has two effects: it tells the interpreter in
+\fBpcre2_match()\fP to support invalid UTF, and, if \fBpcre2_jit_compile()\fP
+is called, the compiled JIT code also supports invalid UTF. Details of how this
+support works, in both the JIT and the interpretive cases, is given in the
+.\" HREF
+\fBpcre2unicode\fP
+.\"
+documentation.
+.P
+There is also an obsolete option for \fBpcre2_jit_compile()\fP called
+PCRE2_JIT_INVALID_UTF, which currently exists only for backward compatibility.
+It is superseded by the \fBpcre2_compile()\fP option PCRE2_MATCH_INVALID_UTF
+and should no longer be used. It may be removed in future.
+.
+.
 .SH "UNSUPPORTED OPTIONS AND PATTERN ITEMS"
 .rs
 .sp
 The \fBpcre2_match()\fP options that are supported for JIT matching are
-PCRE2_NOTBOL, PCRE2_NOTEOL, PCRE2_NOTEMPTY, PCRE2_NOTEMPTY_ATSTART,
-PCRE2_NO_UTF_CHECK, PCRE2_PARTIAL_HARD, and PCRE2_PARTIAL_SOFT. The
-PCRE2_ANCHORED option is not supported at match time.
+PCRE2_COPY_MATCHED_SUBJECT, PCRE2_NOTBOL, PCRE2_NOTEOL, PCRE2_NOTEMPTY,
+PCRE2_NOTEMPTY_ATSTART, PCRE2_NO_UTF_CHECK, PCRE2_PARTIAL_HARD, and
+PCRE2_PARTIAL_SOFT. The PCRE2_ANCHORED and PCRE2_ENDANCHORED options are not
+supported at match time.
 .P
 If the PCRE2_NO_JIT option is passed to \fBpcre2_match()\fP it disables the
 use of JIT, forcing matching by the interpreter code.
@@ -376,10 +405,13 @@ available, and which need the best possible performance, can instead use a
 processed by \fBpcre2_jit_compile()\fP).
 .P
 The fast path function is called \fBpcre2_jit_match()\fP, and it takes exactly
-the same arguments as \fBpcre2_match()\fP. The return values are also the same,
-plus PCRE2_ERROR_JIT_BADOPTION if a matching mode (partial or complete) is
-requested that was not compiled. Unsupported option bits (for example,
-PCRE2_ANCHORED) are ignored, as is the PCRE2_NO_JIT option.
+the same arguments as \fBpcre2_match()\fP. However, the subject string must be
+specified with a length; PCRE2_ZERO_TERMINATED is not supported. Unsupported
+option bits (for example, PCRE2_ANCHORED, PCRE2_ENDANCHORED and
+PCRE2_COPY_MATCHED_SUBJECT) are ignored, as is the PCRE2_NO_JIT option. The
+return values are also the same as for \fBpcre2_match()\fP, plus
+PCRE2_ERROR_JIT_BADOPTION if a matching mode (partial or complete) is requested
+that was not compiled.
 .P
 When you call \fBpcre2_match()\fP, as well as testing for invalid options, a
 number of other sanity checks are performed on the arguments. For example, if
@@ -412,6 +444,6 @@ Cambridge, England.
 .rs
 .sp
 .nf
-Last updated: 28 June 2018
-Copyright (c) 1997-2018 University of Cambridge.
+Last updated: 23 May 2019
+Copyright (c) 1997-2019 University of Cambridge.
 .fi
