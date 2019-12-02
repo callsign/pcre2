@@ -1,3 +1,9 @@
+pcre2 (10.34-3) unstable; urgency=medium
+
+  * Remove -dbg package from debian/control as well
+
+ -- Matthew Vernon <matthew@debian.org>  Mon, 02 Dec 2019 11:58:33 +0000
+
 pcre2 (10.34-2) unstable; urgency=high
 
   * Try an upstream patch to fix an ARM bug (apropos 945972)
