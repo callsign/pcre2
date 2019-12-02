@@ -29,4 +29,4 @@ override_dh_makeshlibs:
 	dh_makeshlibs -V --add-udeb=libpcre2-8-0-udeb
 
 override_dh_strip:
-	dh_strip --dbg-package=libpcre2-dbg
+	dh_strip --dbgsym-migration='libpcre2-dbg (<< 10.34-2~)'
