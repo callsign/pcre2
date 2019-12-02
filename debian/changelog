@@ -1,3 +1,11 @@
+pcre2 (10.34-2) unstable; urgency=high
+
+  * Try an upstream patch to fix an ARM bug (apropos 945972)
+  * Remove -dbg in favour of -dbgsyms, thanks to Michael Biebl
+    <biebl@debian.org> for the patch (Closes: #891624)
+
+ -- Matthew Vernon <matthew@debian.org>  Mon, 02 Dec 2019 11:22:32 +0000
+
 pcre2 (10.34-1) unstable; urgency=medium
 
   * New upstream release
