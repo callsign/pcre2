@@ -67,6 +67,8 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
+Replaces: libpcre2-posix0
+Conflicts: libpcre2-posix0
 Description: New Perl Compatible Regular Expression Library - posix-compatible runtime files
  This is PCRE2, the new implementation of PCRE, a library of functions
  to support regular expressions whose syntax and semantics are as
