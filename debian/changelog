@@ -1,3 +1,12 @@
+pcre2 (10.34-6) unstable; urgency=high
+
+  * Replace: and Conflict: the previous libpcre2-posix0 package (which
+    erroneously had the soname 2 library in) (Closes: #946279, #946290, #946311)
+  * Can now make a source-only upload now libpcre2-posix2 has made it
+    through NEW. We need that so we can migrate to testing (Closes: #946275)
+
+ -- Matthew Vernon <matthew@debian.org>  Sat, 07 Dec 2019 14:34:25 +0000
+
 pcre2 (10.34-5) unstable; urgency=medium
 
   * Sacrifice an integer so I can do a binary upload for the new
