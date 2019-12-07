@@ -1,3 +1,9 @@
+pcre2 (10.34-7) unstable; urgency=medium
+
+  * Upstream patch to fix segfault in rspamd (Closes: #946221)
+
+ -- Matthew Vernon <matthew@debian.org>  Sat, 07 Dec 2019 17:06:59 +0000
+
 pcre2 (10.34-6) unstable; urgency=high
 
   * Replace: and Conflict: the previous libpcre2-posix0 package (which
